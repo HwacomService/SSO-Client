@@ -39,7 +39,7 @@ class SSOAuthenticated
         }
         setcookie("callback", config("sso.callback"), 0, "/", '.hwacom.com');
 
-        return redirect(config("auth.sso_host") .  "/google/auth");
+        return redirect(config("sso.sso_host") .  "/google/auth");
 
     }
 

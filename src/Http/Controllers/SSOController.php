@@ -1,6 +1,6 @@
 <?php
 
-namespace Hwacom\ClientSso\Controllers;
+namespace Hwacom\ClientSso\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Hwacom\ClientSso\Services\SSOService;
