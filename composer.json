@@ -1,0 +1,28 @@
+{
+    "name": "hwacom/client-sso",
+    "description": "SSO Client Package",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hwacom\\ClientSso\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ryan",
+            "email": "mozielin@gmail.com"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Hwacom\\ClientSso\\SSOServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
