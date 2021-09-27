@@ -13,12 +13,7 @@ class SSOServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php' . '');
-
-        /** @var Router $router */
-        $router = $this->app['router'];
-        $router->pushMiddlewareToGroup('web', \App\Http\Middleware\SSOAuthenticated::class,);
     }
 
     /**
