@@ -7,7 +7,6 @@ use Hwacom\ClientSso\Services\SSOService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use Session,Log;
 
 class SSOController extends Controller
@@ -27,7 +26,7 @@ class SSOController extends Controller
             list($base64header, $base64payload, $sign) = $tokens;
             $payload    = json_decode($this->SSOService->base64UrlDecode($base64payload));
             $email = $payload->email;
-            $user = User::where('email',$email)->first();
+            $user = config('sso.user_model')::where('email',$email)->first();
 
             if ($user) {
                 Auth::login($user);
