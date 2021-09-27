@@ -26,7 +26,7 @@ class SSOController extends Controller
             list($base64header, $base64payload, $sign) = $tokens;
             $payload    = json_decode($this->SSOService->base64UrlDecode($base64payload));
             $email = $payload->email;
-            $user = config('sso.user_model')::where('email',$email)->first();
+            $user = config('auth.providers.users.model')::where('email',$email)->first();
 
             if ($user) {
                 Auth::login($user);
