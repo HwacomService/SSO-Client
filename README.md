@@ -38,6 +38,15 @@ php artisan vendor:publish
 'sso_host'      => env("SSO_HOST")
 ```
 
+在`.env` 中增加設定
+
+```php
+SSO_ENABLE          = true
+SSO_HOST            = http://test.eip.hwacom.com:8000
+SSO_CLIENT_SECRET   = ELg5TA5b5JTEJUCdDGoRo0mZIKQe1EuoF8W6ytvP
+SSO_CLIENT_CALLBACK = http://test.crm.hwacom.com:8080/callback
+```
+
 ## [LoginController] 增加兩個Function
 Login
 

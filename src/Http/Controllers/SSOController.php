@@ -42,12 +42,15 @@ class SSOController extends Controller
 
     /**
      * 登入頁面置換，需自行寫入LoginController中
-     *
+     * Laravel8 Function Name 改為 create
      */
     public function showLoginForm()
     {
-        setcookie("callback", config('auth.callback'), 0, "/", '.hwacom.com');
-        return redirect(config("sso.sso_host") .  "/google/auth");
+        if (config('sso.sso_enable') === true ) {
+            setcookie("callback", config('sso.callback'), 0, "/", '.hwacom.com');
+            return redirect(config("sso.sso_host") .  "/google/auth");
+        }
+        return view('auth.login');
     }
 
     /**
@@ -58,9 +61,11 @@ class SSOController extends Controller
      */
     public function logout(Request $request)
     {
-        setcookie("token", "", time() - 3600, '/', '.hwacom.com');
+        if (config('sso.sso_enable') === true ) {
+            setcookie("token", "", time() - 3600, '/', '.hwacom.com');
 
-        Auth::guard('web')->logout();
+            Auth::guard('web')->logout();
+        }
 
         $request->session()->invalidate();
 
