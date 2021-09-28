@@ -53,12 +53,15 @@ Login
 ```
 /**
  * 登入頁面置換，需自行寫入LoginController中
- *
+ * Laravel7 Function Name 改為 showLoginForm
  */
-public function showLoginForm()
+public function create()
 {
-    setcookie("callback", config('auth.callback'), 0, "/", '.hwacom.com');
-    return redirect(config("sso.sso_host") .  "/google/auth");
+    if (config('sso.sso_enable') === true ) {
+        setcookie("callback", config('sso.callback'), 0, "/", '.hwacom.com');
+        return redirect(config("sso.sso_host") .  "/google/auth");
+    }
+    return view('auth.login');
 }
 ```
 
@@ -71,9 +74,11 @@ Logout
  * @param  \Illuminate\Http\Request  $request
  * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
  */
-public function logout(Request $request)
+public function destroy(Request $request)
 {
-    setcookie("token", "", time() - 3600, '/', '.hwacom.com');
+    if (config('sso.sso_enable') === true ) {
+        setcookie("token", "", time() - 3600, '/', '.hwacom.com');
+    }
 
     Auth::guard('web')->logout();
 
@@ -81,17 +86,11 @@ public function logout(Request $request)
 
     $request->session()->regenerateToken();
 
-    if ($response = $this->loggedOut($request)) {
-        return $response;
-    }
-
-    return $request->wantsJson()
-        ? new JsonResponse([], 204)
-        : redirect(config("sso.sso_host"));
+    return redirect(config("sso.sso_host"));
 }
 ```
 ## [Middleware] 增加至`Http/Kernel.php`web Group中
 
 ```php
-\App\Http\Middleware\SSOAuthenticated::class,
+\Hwacom\ClientSso\Middleware\SSOAuthenticated::class,
 ```
