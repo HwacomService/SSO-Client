@@ -48,7 +48,8 @@ class SSOController extends Controller
     {
         if (config('sso.sso_enable') === true ) {
             setcookie("callback", config('sso.callback'), 0, "/", '.hwacom.com');
-            return redirect(config("sso.sso_host") .  "/google/auth");
+            $secret = config('sso.client_secret');
+            return redirect(config("sso.sso_host") . "/google/auth/login/" . "$secret");
         }
         return view('auth.login');
     }

@@ -30,7 +30,6 @@ class SSOAuthenticated
                 $tokens = explode('.', $token);
                 list($base64header, $base64payload, $sign) = $tokens;
                 $payload = json_decode($this->SSOService->base64UrlDecode($base64payload));
-
                 if ($payload){
                     $expire = date('Y-m-d H:i:s',$payload->exp);
                     if ($expire > now()){
@@ -39,8 +38,8 @@ class SSOAuthenticated
                 }
             }
             setcookie("callback", config("sso.callback"), 0, "/", '.hwacom.com');
-
-            return redirect(config("sso.sso_host") .  "/google/auth");
+            $secret = config('sso.client_secret');
+            return redirect(config("sso.sso_host") . "/google/auth/login/" . "$secret");
         }else{
             return $next($request);
         }
