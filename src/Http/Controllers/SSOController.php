@@ -42,6 +42,7 @@ class SSOController extends Controller
     /**
      * 登入頁面置換，需自行寫入LoginController中
      * Laravel8 Function Name 改為 create
+     * 須加上Client Secret 不然會導回EIP首頁
      */
     public function showLoginForm()
     {
