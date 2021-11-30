@@ -20,7 +20,6 @@ class SSOController extends Controller
 
     public function callback(Request $request){
         $token      = $_COOKIE['token'] ?? '';
-
         if($token != ""){
             $tokens     = explode('.', $token);
             list($base64header, $base64payload, $sign) = $tokens;
