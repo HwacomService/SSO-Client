@@ -15,7 +15,7 @@ class SSOAuthenticated
         $this->SSOService = new SSOService;
     }
     /**
-     * Handle an incoming request.
+     * MiddleWare攔截檢查Cookie有無Token.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
