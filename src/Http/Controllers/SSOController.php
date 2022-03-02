@@ -29,7 +29,7 @@ class SSOController extends Controller
 
             if ($user) {
                 Auth::login($user);
-                $path = Session::get('redirect');
+                $path = Session::get('redirect') ?? '/';
                 return redirect($path);
             }
         }else{

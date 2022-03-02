@@ -2,8 +2,10 @@
 
 namespace Hwacom\ClientSso\Middleware;
 
+use App\Models\User;
 use Hwacom\ClientSso\Services\SSOService;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class SSOAuthenticated
 {
@@ -28,9 +30,12 @@ class SSOAuthenticated
             $payload    = null;
             if($token != "") {
                 $tokens = explode('.', $token);
-                list($base64header, $base64payload, $sign) = $tokens;
+                [$base64header, $base64payload, $sign] = $tokens;
                 $payload = json_decode($this->SSOService->base64UrlDecode($base64payload));
                 if ($payload){
+                    //增加Email判斷取得User登入權限
+                    $user = User::where('email', $payload->email)->first();
+                    Auth::loginUsingId($user->id);
                     $expire = date('Y-m-d H:i:s',$payload->exp);
                     if ($expire > now()){
                         return $next($request);
