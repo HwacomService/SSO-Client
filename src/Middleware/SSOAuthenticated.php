@@ -35,7 +35,9 @@ class SSOAuthenticated
                 if ($payload){
                     //增加Email判斷取得User登入權限
                     $user = User::where('email', $payload->email)->first();
-                    Auth::loginUsingId($user->id);
+                    if (!Auth::check()) {
+                        Auth::loginUsingId($user->id, true);
+                    }
                     $expire = date('Y-m-d H:i:s',$payload->exp);
                     if ($expire > now()){
                         return $next($request);
