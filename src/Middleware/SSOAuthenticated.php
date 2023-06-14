@@ -36,7 +36,8 @@ class SSOAuthenticated
                     //增加Email判斷取得User登入權限
                     $user = User::where('email', $payload->email)->first();
                     if (!Auth::check()) {
-                        Auth::loginUsingId($user->id, true);
+                        Auth::loginUsingId($user->id);
+                        //因為資安需求不能有Remember Token故意除後段true屬性
                     }
                     $expire = date('Y-m-d H:i:s',$payload->exp);
                     if ($expire > now()){
