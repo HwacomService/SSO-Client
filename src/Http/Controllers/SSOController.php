@@ -7,7 +7,8 @@ use Hwacom\ClientSso\Services\SSOService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session,Log;
+use Session;
+use Log;
 
 class SSOController extends Controller
 {
@@ -15,24 +16,25 @@ class SSOController extends Controller
 
     public function __construct()
     {
-        $this->SSOService = new SSOService;
+        $this->SSOService = new SSOService();
     }
 
-    public function callback(Request $request){
+    public function callback(Request $request)
+    {
         $token      = $_COOKIE['token'] ?? '';
-        if($token != ""){
+        if ($token != "") {
             $tokens     = explode('.', $token);
-            list($base64header, $base64payload, $sign) = $tokens;
+            [$base64header, $base64payload, $sign] = $tokens;
             $payload    = json_decode($this->SSOService->base64UrlDecode($base64payload));
             $email = $payload->email;
-            $user = config('auth.providers.users.model')::where('email',$email)->first();
+            $user = config('auth.providers.users.model')::where('email', $email)->first();
 
             if ($user) {
                 Auth::login($user);
                 $path = Session::get('redirect') ?? '/';
                 return redirect($path);
             }
-        }else{
+        } else {
             Auth::logout();
             return redirect(config("sso.sso_host"));
         }
@@ -46,7 +48,7 @@ class SSOController extends Controller
      */
     public function showLoginForm()
     {
-        if (config('sso.sso_enable') === true ) {
+        if (config('sso.sso_enable') === true) {
             setcookie("callback", config('sso.callback'), 0, "/", '.hwacom.com');
             $secret = config('sso.client_secret');
             return redirect(config("sso.sso_host") . "/google/auth/login/" . "$secret");
@@ -62,7 +64,7 @@ class SSOController extends Controller
      */
     public function logout(Request $request)
     {
-        if (config('sso.sso_enable') === true ) {
+        if (config('sso.sso_enable') === true) {
             setcookie("token", "", time() - 3600, '/', '.hwacom.com');
 
             Auth::guard('web')->logout();

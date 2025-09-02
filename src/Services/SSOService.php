@@ -29,4 +29,3 @@ class SSOService
         return base64_decode(strtr($input, '-_', '+/'));
     }
 }
-
